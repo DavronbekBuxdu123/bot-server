@@ -75,14 +75,15 @@ bot.on("message", async (msg) => {
   }
 
   if (text === "💳 Plastik orqali to'lov") {
-    userStates.set(chatId, "waiting_for_card_number");
+    userStates.set(chatId, "card_number");
     await bot.sendMessage(
       chatId,
       "💳 Iltimos, karta raqamingizni yuboring (faqat 16 xonali raqam):"
     );
+    return;
   }
 
-  if (userStates.get(chatId) === "waiting_for_card_number") {
+  if (userStates.get(chatId) === "card_number" && /^\d+$/.test(text)) {
     if (/^\d{16}$/.test(text)) {
       await bot.sendMessage(
         chatId,
