@@ -89,8 +89,8 @@ bot.on("message", async (msg) => {
     userStates.set(chatId, null);
     await bot.sendMessage(
       chatId,
-      `📞 Tez orada admin siz bilan bog'lanadi.\n🔗 Username: @${
-        msg.from.username || ""
+      `📞Hurmatli ${msg.from.first_name} tez orada admin siz bilan bog'lanadi.\n
+      Admin @${Aslonov_Davronbek}
       }`
     );
     return;
@@ -100,13 +100,15 @@ bot.on("message", async (msg) => {
     if (/^\d{16}$/.test(text)) {
       await bot.sendMessage(
         chatId,
-        "✅ Karta raqamingiz qabul qilindi. Tez orada admin siz bilan bog'lanadi."
+        `📞Hurmatli ${msg.from.first_name} tez orada admin siz bilan bog'lanadi.\n
+      Admin @${Aslonov_Davronbek}
+      }`
       );
       userStates.set(chatId, null);
     } else {
       await bot.sendMessage(
         chatId,
-        "❌ Iltimos, aynan 16 xonali raqam kiriting."
+        "❌ Iltimos, faqat 16 xonali raqam kiriting."
       );
     }
   }
