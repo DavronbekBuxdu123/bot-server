@@ -1,68 +1,105 @@
 const TelegramBot = require("node-telegram-bot-api");
-const token = process.env.BOT_TOKEN;
-const bot = new TelegramBot(token, { polling: true });
+const express = require("express");
 
-const dava = () => {
+const token = process.env.BOT_TOKEN;
+const PORT = process.env.PORT || 3000;
+
+const bot = new TelegramBot(token, { polling: true });
+const app = express();
+function dava() {
   bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
+
     if (text === "/start") {
       await bot.sendMessage(
         chatId,
-        "Sammi.ac platformasida bor kurslarni sotib olishingiz mumkin",
+        "Sammi.ac platformasida mavjud kurslarni sotib olishingiz mumkin.",
         {
           reply_markup: {
             keyboard: [
               [
                 {
-                  text: "Kurslarni ko'rish",
+                  text: "📚 Kurslarni ko‘rish",
                   web_app: {
                     url: "https://telegram-web-bot-two-psi.vercel.app/",
                   },
                 },
               ],
             ],
+            resize_keyboard: true,
           },
         }
       );
     }
+
     if (msg.web_app_data?.data) {
-      const hisobla = () => {
-        const data = JSON.parse(msg.web_app_data?.data);
-        const sum = data.reduce((acc, c) => acc + c.quantity * c.price, 0);
-        return sum.toLocaleString("en-US", {
+      try {
+        const data = JSON.parse(msg.web_app_data.data);
+        const total = data.reduce((acc, c) => acc + c.quantity * c.price, 0);
+        const formattedPrice = total.toLocaleString("en-US", {
           style: "currency",
           currency: "USD",
         });
-      };
 
-      try {
-        const data = JSON.parse(msg.web_app_data?.data);
         await bot.sendMessage(
           chatId,
-          "Bizga ishonch bildirganingiz uchun raxmat, sotib olgan kurslaringiz ro'yxati"
+          "✅ Bizga ishonch bildirganingiz uchun raxmat!\n🛒 Sotib olingan kurslaringiz:"
         );
-
-        for (item of data) {
+        for (const item of data) {
           await bot.sendPhoto(chatId, item.Image);
-          await bot.sendMessage(chatId, `${item.title} ${item.quantity}x`);
+          await bot.sendMessage(chatId, `📘 ${item.title} — ${item.quantity}x`);
         }
-        await bot.sendMessage(chatId, `Umumiy narx ${hisobla()}`);
+        await bot.sendMessage(chatId, `💰 Umumiy narx: ${formattedPrice}`);
+        await bot.sendMessage(chatId, "To‘lov turini tanlang:", {
+          reply_markup: {
+            keyboard: [
+              [{ text: "💳 Click / Payme orqali to‘lov" }],
+              [{ text: "💵 Naqd to‘lov" }],
+            ],
+            resize_keyboard: true,
+            one_time_keyboard: true,
+          },
+        });
       } catch (error) {
-        console.log(error);
+        await bot.sendMessage(
+          chatId,
+          "Xatolik yuz berdi. Iltimos, qaytadan urinib ko‘ring."
+        );
       }
     }
+
+    if (text === "💳 Click / Payme orqali to‘lov") {
+      await bot.sendMessage(
+        chatId,
+        "💳 Iltimos, karta raqamingizni yuboring (16 ta raqam):"
+      );
+    }
+
+    if (text === "💵 Naqd to‘lov") {
+      await bot.sendMessage(
+        chatId,
+        `📞 Tez orada admin siz bilan bog‘lanadi.\n🔗 Username: @${
+          msg.from.username || "yo‘q"
+        }`
+      );
+    }
+
+    if (/^\d{16}$/.test(text)) {
+      await bot.sendMessage(
+        chatId,
+        "✅ Karta raqamingiz qabul qilindi. Tez orada admin siz bilan bog‘lanadi."
+      );
+    }
   });
-};
+}
+
 dava();
-const express = require("express");
-const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("Bot ishga tushdi ✅");
+  res.send("bot ishga tushdi!");
 });
 
 app.listen(PORT, () => {
-  console.log(`Express server ishga tushdi: ${PORT}`);
+  console.log(`http://localhost:${PORT}`);
 });
