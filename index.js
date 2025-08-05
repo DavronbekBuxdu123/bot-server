@@ -90,7 +90,7 @@ bot.on("message", async (msg) => {
     await bot.sendMessage(
       chatId,
       `📞Hurmatli ${msg.from.first_name} tez orada admin siz bilan bog'lanadi.\n
-      Admin @${Aslonov_Davronbek}
+      Admin @Aslonov_Davronbek
       }`
     );
     return;
@@ -101,7 +101,7 @@ bot.on("message", async (msg) => {
       await bot.sendMessage(
         chatId,
         `📞Hurmatli ${msg.from.first_name} tez orada admin siz bilan bog'lanadi.\n
-      Admin @${Aslonov_Davronbek}
+      Admin @Aslonov_Davronbek
       }`
       );
       userStates.set(chatId, null);
