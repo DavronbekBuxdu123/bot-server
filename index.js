@@ -44,10 +44,13 @@ bot.on("message", async (msg) => {
         style: "currency",
         currency: "USD",
       });
-
+      const fullName = `${msg.from.first_name || ""} ${
+        msg.from.last_name || ""
+      }`.trim();
+      const userName = msg.from.username ? `(@${msg.from.username})` : "";
       await bot.sendMessage(
         chatId,
-        "✅ Bizga ishonch bildirganingiz uchun raxmat!\n🛒 Sotib olingan kurslaringiz:"
+        `✅ ${fullName} ${userName}, bizga ishonch bildirganingiz uchun raxmat!\n🛒 Sotib olingan kurslaringiz:`
       );
       for (const item of data) {
         await bot.sendPhoto(chatId, item.Image);
