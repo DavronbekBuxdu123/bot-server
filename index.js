@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { connectToMongo } = require("./db");
+const { connectToDatabase } = require("./db");
 const TelegramBot = require("node-telegram-bot-api");
 const express = require("express");
 
@@ -17,7 +17,7 @@ bot.on("message", async (msg) => {
 
   if (text === "/start") {
     try {
-      const usersCollection = await connectToMongo();
+      const usersCollection = await connectToDatabase();
       const chatId = msg.chat.id;
       const firstName = msg.from.first_name || "NoName";
       const username = msg.from.username || "NoUsername";
