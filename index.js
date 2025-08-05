@@ -68,7 +68,7 @@ bot.on("message", async (msg) => {
         },
       });
 
-      userStates.set(chatId, "card_number");
+      userStates.set(chatId, "waiting_for_payment_type");
     } catch (error) {
       await bot.sendMessage(
         chatId,
