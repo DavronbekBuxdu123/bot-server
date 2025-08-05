@@ -74,12 +74,14 @@ function dava() {
         chatId,
         "💳 Iltimos, karta raqamingizni yuboring (faqat 16 xonali raqam):"
       );
-    } else if (/^\d{16}$/.test(text)) {
+    }
+    if (/^\d{16}$/.test(text)) {
       await bot.sendMessage(
         chatId,
         "✅ Karta raqamingiz qabul qilindi. Tez orada admin siz bilan bog‘lanadi."
       );
-    } else if (/^\d{10,19}$/.test(text)) {
+    }
+    if (/^\d{10,19}$/.test(text)) {
       await bot.sendMessage(
         chatId,
         "❌ Iltimos, aynan 16 xonali raqam kiriting."
