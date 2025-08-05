@@ -73,7 +73,6 @@ bot.on("message", async (msg) => {
       );
     }
   }
-
   if (text === "💳 Plastik orqali to'lov") {
     userStates.set(chatId, "card_number");
     await bot.sendMessage(
@@ -83,7 +82,18 @@ bot.on("message", async (msg) => {
     return;
   }
 
-  if (userStates.get(chatId) === "card_number" && /^\d+$/.test(text)) {
+  if (text === "💵 Naqd to'lov") {
+    userStates.set(chatId, null);
+    await bot.sendMessage(
+      chatId,
+      `📞 Tez orada admin siz bilan bog'lanadi.\n🔗 Username: @${
+        msg.from.username || "yo'q"
+      }`
+    );
+    return;
+  }
+
+  if (userStates.get(chatId) === "card_number") {
     if (/^\d{16}$/.test(text)) {
       await bot.sendMessage(
         chatId,
@@ -96,16 +106,6 @@ bot.on("message", async (msg) => {
         "❌ Iltimos, aynan 16 xonali raqam kiriting."
       );
     }
-  }
-
-  if (text === "💵 Naqd to'lov") {
-    await bot.sendMessage(
-      chatId,
-      `📞 Tez orada admin siz bilan bog'lanadi.\n🔗 Username: @${
-        msg.from.username || "yo'q"
-      }`
-    );
-    userStates.set(chatId, null);
   }
 });
 
