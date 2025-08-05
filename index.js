@@ -20,7 +20,7 @@ function dava() {
             keyboard: [
               [
                 {
-                  text: "📚 Kurslarni ko‘rish",
+                  text: "📚 Kurslarni ko'rish",
                   web_app: {
                     url: "https://telegram-web-bot-two-psi.vercel.app/",
                   },
@@ -51,11 +51,11 @@ function dava() {
           await bot.sendMessage(chatId, `📘 ${item.title} — ${item.quantity}x`);
         }
         await bot.sendMessage(chatId, `💰 Umumiy narx: ${formattedPrice}`);
-        await bot.sendMessage(chatId, "To‘lov turini tanlang:", {
+        await bot.sendMessage(chatId, "To'lov turini tanlang:", {
           reply_markup: {
             keyboard: [
-              [{ text: "💳 Click / Payme orqali to‘lov" }],
-              [{ text: "💵 Naqd to‘lov" }],
+              [{ text: "💳 Plastik orqali to'lov" }],
+              [{ text: "💵 Naqd to'lov" }],
             ],
             resize_keyboard: true,
             one_time_keyboard: true,
@@ -64,12 +64,12 @@ function dava() {
       } catch (error) {
         await bot.sendMessage(
           chatId,
-          "Xatolik yuz berdi. Iltimos, qaytadan urinib ko‘ring."
+          "Xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring."
         );
       }
     }
 
-    if (text === "💳 Click / Payme orqali to‘lov") {
+    if (text === "💳 Plastik orqali to'lov") {
       await bot.sendMessage(
         chatId,
         "💳 Iltimos, karta raqamingizni yuboring (faqat 16 xonali raqam):"
@@ -78,7 +78,7 @@ function dava() {
     if (/^\d{16}$/.test(text)) {
       await bot.sendMessage(
         chatId,
-        "✅ Karta raqamingiz qabul qilindi. Tez orada admin siz bilan bog‘lanadi."
+        "✅ Karta raqamingiz qabul qilindi. Tez orada admin siz bilan bog'lanadi."
       );
     }
     if (/^\d{10,19}$/.test(text)) {
@@ -88,19 +88,12 @@ function dava() {
       );
     }
 
-    if (text === "💵 Naqd to‘lov") {
+    if (text === "💵 Naqd to'lov") {
       await bot.sendMessage(
         chatId,
-        `📞 Tez orada admin siz bilan bog‘lanadi.\n🔗 Username: @${
-          msg.from.username || "yo‘q"
+        `📞 Tez orada admin siz bilan bog'lanadi.\n🔗 Username: @${
+          msg.from.username || "yo'q"
         }`
-      );
-    }
-
-    if (/^\d{16}$/.test(text)) {
-      await bot.sendMessage(
-        chatId,
-        "✅ Karta raqamingiz qabul qilindi. Tez orada admin siz bilan bog‘lanadi."
       );
     }
   });
