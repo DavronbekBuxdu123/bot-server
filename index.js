@@ -1,3 +1,5 @@
+require("dotenv").config();
+const { connectToMongo } = require("./db");
 const TelegramBot = require("node-telegram-bot-api");
 const express = require("express");
 
@@ -14,6 +16,29 @@ bot.on("message", async (msg) => {
   const text = msg.text;
 
   if (text === "/start") {
+    try {
+      const usersCollection = await connectToMongo();
+      const chatId = msg.chat.id;
+      const firstName = msg.from.first_name || "NoName";
+      const username = msg.from.username || "NoUsername";
+
+      const existingUser = await usersCollection.findOne({ chatId });
+
+      if (!existingUser) {
+        await usersCollection.insertOne({
+          chatId,
+          firstName,
+          username,
+          date: new Date(),
+        });
+        console.log("Yangi foydalanuvchi saqlandi:", firstName, username);
+      } else {
+        console.log("Oldin saqlangan foydalanuvchi:", firstName, username);
+      }
+    } catch (err) {
+      console.error(" MongoDB yozishda xatolik:", err.message);
+    }
+
     userStates.set(chatId, null);
     await bot.sendMessage(
       chatId,
