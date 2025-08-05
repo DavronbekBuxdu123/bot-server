@@ -68,7 +68,7 @@ bot.on("message", async (msg) => {
         },
       });
 
-      userStates.set(chatId, "waiting_for_payment_type");
+      userStates.set(chatId, "card_number");
     } catch (error) {
       await bot.sendMessage(
         chatId,
@@ -90,7 +90,7 @@ bot.on("message", async (msg) => {
     await bot.sendMessage(
       chatId,
       `📞 Tez orada admin siz bilan bog'lanadi.\n🔗 Username: @${
-        msg.from.username || "yo'q"
+        msg.from.username || ""
       }`
     );
     return;
